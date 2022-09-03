@@ -143,7 +143,7 @@
               //set popup text
               //You can adjust the values of the popup to match the headers of your CSV.
               // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
-              var description = `<h3>` + e.features[0].properties.Owner + `</h3>` + `<h4>` + `<b>` + `Address: ` + `</b>` + `<h4>` + `<b>` + `2022 Code: ` + `</b>` + e.features[0].properties.Code2022 + `</h4>`   + `<h4>` + `<b>` + `Trees: ` + `</b>` + e.features[0].properties.TreeType + `</h4>`   + e.features[0].properties.Address + `</h4>` + `<h4>` + `<b>` + `City: ` + `</b>` + e.features[0].properties.ShortCity + `</h4>`
+              var description = `<h3>` + e.features[0].properties.Owner + `</h3>` + `<h4>` + `<b>` + `Address: ` + e.features[0].properties.Address + `</h4>` + `</b>` + `<h4>` + `<b>` + `2022 Code: ` + `</b>` + e.features[0].properties.Code2022 + `</h4>`   + `<h4>` + `<b>` + `Trees: ` + `</b>` + e.features[0].properties.TreeType + `</h4>`+ `<h4>` + `<b>` + `City: ` + `</b>` + e.features[0].properties.ShortCity + `</h4>`
               ;
 
               // Ensure that if the map is zoomed out such that multiple
