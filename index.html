@@ -105,7 +105,7 @@
       $.ajax({
         type: "GET",
         //YOUR TURN: Replace with csv export link
-        url: 'https://docs.google.com/spreadsheets/d/1XiZkEDjf8VXj9aa_HOvmU017jP3zhmfPPtZaR9_yUcE/gviz/tq?tqx=out:csv&sheet=2022 MASTER',
+        url: 'https://docs.google.com/spreadsheets/d/1XiZkEDjf8VXj9aa_HOvmU017jP3zhmfPPtZaR9_yUcE/gviz/tq?tqx=out:csv&sheet=Sheet31',
         dataType: "text",
         success: function (csvData) { makeGeoJSON(csvData); }
       });
@@ -120,7 +120,7 @@
         }, function (err, data) {
           map.on('load', function () {
 
-            //Add the the layer to the map
+            //Add the layer to the map
             map.addLayer({
               'id': 'csvData',
               'type': 'circle',
