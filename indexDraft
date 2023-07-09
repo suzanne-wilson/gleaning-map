@@ -103,7 +103,7 @@
     var map = new mapboxgl.Map({
       container: 'map', // container id
       style: 'mapbox://styles/mapbox/streets-v11', // YOUR TURN: choose a style: https://docs.mapbox.com/api/maps/#styles
-      center: [ -122.800303, 48.119783], // starting position [lng, lat]
+      center: [-122.75742837715816, 48.1226253432329 ], // starting position [lng, lat]
       zoom: 12,// starting zoom
       transformRequest: transformRequest
     });
@@ -182,7 +182,7 @@
                 .addTo(map);
             });
 
-            // Change the cursor to a pointer when the mouse is over the places layer.
+            // Change the cursor to a pointer when the mouse is over the places .
             map.on('mouseenter', 'csvData', function () {
               map.getCanvas().style.cursor = 'pointer';
             });
