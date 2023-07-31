@@ -64,6 +64,7 @@ body { margin: 0; padding: 0; }
 <div id="map"></div>
 <nav id="filter-group" class="filter-group"></nav>
 
+
 <script>
 	mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2tkZmNnM2s5MGZ5dzJxbmFmOXRibXpnOSJ9.1ECH9AdVxv1IzRQUJNyfKA';
     // This GeoJSON contains features that include an "icon"
