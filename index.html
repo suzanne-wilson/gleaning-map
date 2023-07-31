@@ -110,8 +110,6 @@
         success: function (trees) { makeGeoJSON(trees); }
       });
 
-
-
       function makeGeoJSON(trees) {
         csv2geojson.csv2geojson(trees, {
           latfield: 'Latitude',
@@ -127,27 +125,7 @@
               'source': {
                 'type': 'geojson',
                 'data': data
-              },
-              'paint': {
-                'circle-radius': 5,
-                'circle-color': [ 'match',
-                                  ['get', 'TreeType'],
-                                  'Apple',
-                                  '#663399',
-                                  'Pear',
-                                  '#00FF7F',
-                                  'Asian Pear',
-                                  '#ff1493',
-                                  'Fig',
-                                  '#20b2aa',
-                                  'Cherry',
-                                  '#4169E1',
-                                  'Plum',
-                                  '#FFFF00',
-                                  '#FF00FF'
-                                  ]
-              }
-            });
+              });
 
 
             // When a click event occurs on a feature in the csvData layer, open a popup at the
