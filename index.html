@@ -107,7 +107,7 @@
         //YOUR TURN: Replace with csv export link
         url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pubhtml?gid=92476124&single=true',
         dataType: "text",
-        success: function (trees) { makeGeoJSON(trees); }
+        success: function (trees) { makeGeoJSON(trees) }
       });
 
       function makeGeoJSON(trees) {
@@ -125,7 +125,7 @@
               'source': {
                 'type': 'geojson',
                 'data': data
-              });
+              })
 
 
             // When a click event occurs on a feature in the csvData layer, open a popup at the
