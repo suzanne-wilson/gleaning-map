@@ -100,14 +100,14 @@
       zoom: 12,// starting zoom
       transformRequest: transformRequest
     });
-
+   
     $(document).ready(function () {
       $.ajax({
         type: "GET",
         //YOUR TURN: Replace with csv export link
         url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pubhtml?gid=511350341&single=true',
         dataType: "text",
-        success: function (trees) { makeGeoJSON(trees) }
+        success: function (trees) { makeGeoJSON(trees); }
       });
 
       function makeGeoJSON(trees) {
@@ -117,7 +117,7 @@
           delimiter: ','
         }, function (err, data) {
           map.on('load', function () {
-
+            
             //Add the layer to the map
             map.addLayer({
               'id': 'trees',
@@ -125,7 +125,27 @@
               'source': {
                 'type': 'geojson',
                 'data': data
+              },
+ 'paint': {
+                'circle-radius': 5,
+                'circle-color': [ 'match',
+                                  ['get', 'TreeType'],
+                                  'Apple',
+                                  '#663399',
+                                  'Pear',
+                                  '#00FF7F',
+                                  'Asian Pear',
+                                  '#ff1493',
+                                  'Fig',
+                                  '#20b2aa',
+                                  'Cherry',
+                                  '#4169E1',
+                                  'Plum',
+                                  '#FFFF00',
+                                  '#FF00FF'
+                                  ]
               }
+            });
 
 
             // When a click event occurs on a feature in the csvData layer, open a popup at the
