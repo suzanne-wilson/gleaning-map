@@ -152,6 +152,14 @@
         // Make the API call
         getIso();
       });
+      //add in the geojson trees source
+      map.on('load', () => {
+      map.addSource('trees', {
+        type: 'geojson',
+      // Use a URL for the value for the `data` property.
+        data: 'trees.geojson'
+      });
+ 
     </script>
   </body>
 </html>
