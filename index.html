@@ -190,7 +190,7 @@
               'paint': {
                 'circle-radius': 5,
                 'circle-color': [ 'match',
-                                  ['get', 'Type'],
+                                  ['get', 'trees'],
                                   'R',
                                   '#663399',
                                   '#FF00FF'
@@ -199,11 +199,11 @@
             });
 
             map.addLayer({
-            'id': 'poinames',
+            'id': 'Code2023',
             'type': 'symbol',
             'source': 'trees',
             'layout': {
-            'text-field': ['get', 'Organization'],
+            'text-field': ['get', 'Code2023'],
             'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
             'text-radial-offset': 0.5,
             'text-justify': 'auto'
@@ -218,7 +218,7 @@
               //set popup text
               //You can adjust the values of the popup to match the headers of your CSV.
               // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
-               var description = `<h3>` + e.features[0].properties.Organization + `</h3>` + `<h4>` + `<b>` + `Address: ` + e.features[0].properties.Address +  `</h4>` +  `<h4>` + `<b>` + `Delivery Person: ` + e.features[0].properties.DeliveryPerson + `</h4>` + `</b>` + `<h4>` + `<b>`  + `2022 Notes: ` + e.features[0].properties.Notes2022 + `</h4>` + `</b>`+ `<h4>` + `<b>` ;
+               var description = `<h3>` + e.features[0].properties.trees + `</h3>` + `<h4>` + `<b>` + `Address: ` + e.features[0].properties.FullAddress +  `</h4>` +  `<h4>` + `<b>` + `Code: ` + e.features[0].properties.Code2023 + `</h4>` + `</b>` + `<h4>` + `<b>`  + `2022 Notes: ` + e.features[0].properties.Notes2022 + `</h4>` + `</b>`+ `<h4>` + `<b>` ;
 
               // Ensure that if the map is zoomed out such that multiple
               // copies of the feature are visible, the popup appears
