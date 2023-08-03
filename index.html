@@ -112,14 +112,41 @@
                 'data': data
               },
               'paint': {
-                'circle-radius': 5,
+                'circle-radius': [
+                                  'step',
+                                  ['get', 'Code2023'],
+                                 0, #a9a9a9,
+                                  1, #66ff00,
+                                  1.5, #66b032,
+                                  2, #66b032,
+                                  3, #66b032,
+                                  4, #66b032,
+                                  5, #3b7a57,
+                                  6, #66b032,
+                                  7, #66b032,
+                                  8, #66b032,
+                                  9, #66b032,
+                                  90, #a9a9a9,
+                                  99, #a9a9a9
+                                  ] ,
                 'circle-color': [ 'match',
-                                  ['get', 'trees'],
-                                  'R',
-                                  '#663399',
+                                  ['get', 'Code2023']
+                                 0, #a9a9a9,
+                                  1, #66ff00,
+                                  1.5, #66b032,
+                                  2, #66b032,
+                                  3, #66b032,
+                                  4, #66b032,
+                                  5, #3b7a57,
+                                  6, #a9a9a9,
+                                  7, #6b8e23,
+                                  8, #a9a9a9,
+                                  9, #a9a9a9,
+                                  90, #6b8e23,
+                                  99,#6b8e23,
                                   '#FF00FF'
                                   ]
-              }
+                      }
             });
 
             map.addLayer({
@@ -127,7 +154,7 @@
             'type': 'symbol',
             'source': 'trees',
             'layout': {
-            'text-field': ['get', 'Code2023'],
+            'text-field': ['get', 'trees'],
             'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
             'text-radial-offset': 0.5,
             'text-justify': 'auto'
