@@ -102,7 +102,7 @@
         dataType: "text",
         success: function (trees) { makeGeoJSON(trees); }
       });
-    }
+    });
       function makeGeoJSON(trees) {
         csv2geojson.csv2geojson(trees, {
           latfield: 'Latitude',
