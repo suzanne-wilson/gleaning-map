@@ -83,10 +83,10 @@
         url: isMapboxRequest
           ? url.replace("?", "?pluginName=sheetMapper&")
           : url
-      };
-    };
+       };
+     };
       mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdnpzN2cwMHg0NzNsbXlyeTgyajg3ayJ9.EyOR6OwW23MTmLSUn-2UZg';
- var map = new mapboxgl.Map({
+      var map = new mapboxgl.Map({
       container: 'map', // container id
       style: 'mapbox://styles/mapbox/streets-v12', // YOUR TURN: choose a style: https://docs.mapbox.com/api/maps/#styles
       center: [-122.75742837715816, 48.1226253432329 ], // starting position [lng, lat]
@@ -102,7 +102,7 @@
         dataType: "text",
         success: function (trees) { makeGeoJSON(trees); }
       });
-    });
+   
       function makeGeoJSON(trees) {
         csv2geojson.csv2geojson(trees, {
           latfield: 'Latitude',
@@ -135,6 +135,7 @@
       })
         })
     }
+       });
             // When a click event occurs on a feature in the csvData layer, open a popup at the
             // location of the feature, with description HTML from its properties.
             map.on('click', 'trees', function (e) {
@@ -171,11 +172,11 @@
 
             var bbox = turf.bbox(data);
             map.fitBounds(bbox, { padding: 50 });
-// may need these
+            // may need these
         
-        //  });
+            //  });
 
-// or may not
+            // or may not
         
       // Target the params form in the HTML
       const params = document.getElementById('params');
