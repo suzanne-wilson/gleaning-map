@@ -94,11 +94,8 @@
         //YOUR TURN: Replace with csv export link
         url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pub?gid=511350341&single=true&output=csv',
         dataType: "text",
-        success: function (trees) { makeGeoJSON(trees); },
-        error: function() {
-            alert('Error occured');
-        }
-      });
+        success: function (trees) { makeGeoJSON(trees); }
+        });
        
       function makeGeoJSON(trees) {
         csv2geojson.csv2geojson(trees, {
