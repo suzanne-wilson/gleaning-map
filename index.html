@@ -208,7 +208,7 @@
         const data = await query.json();
         
         // Set the 'iso' source's data to what's returned by the API query
-        map.getSource('iso').setData(data);
+        map.getSource("iso").setData(data);
       }
 
       // When a user changes the value of profile or duration by clicking a button, change the parameter's value and make the API query again
