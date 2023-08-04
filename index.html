@@ -99,8 +99,7 @@
             alert('Error occured');
         }
       });
-      } )
-     
+       
       function makeGeoJSON(trees) {
         csv2geojson.csv2geojson(trees, {
           latfield: 'Latitude',
@@ -109,7 +108,7 @@
         }, function (err, data) {
         });
       }
-          
+ } )    ;      
       map.on('load', function () {
             //Add the layer to the map
             map.addLayer({
