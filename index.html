@@ -151,8 +151,8 @@
               var coordinates = e.features[0].geometry.coordinates.slice();
               //set popup text
               var description = `<h3>` + `<h4>` + `<b>` + `Tree type: `  + e.features[0].properties.trees          + `</b>` + `</h4>` + 
-                                         `<h4>` + `<b>` + `Address: `    + e.features[0].properties.FullAddress    + `</b>  + `</h4>` +  
-                                         `<h4>` + `<b>` + `Code: `       + e.features[0].properties.Permission2023 + `</b>  + `</h4>` + 
+                                         `<h4>` + `<b>` + `Address: `    + e.features[0].properties.FullAddress    + `</b>`  + `</h4>` +  
+                                         `<h4>` + `<b>` + `Permission for 2023: ` + e.features[0].properties.Permission2023 + `</b>`  + `</h4>` + 
                                          `<h4>` + `<b>` + `2022 Notes: ` + e.features[0].properties.Notes2022      + `</b>` + `</h4>` + 
                                  `</h3>` ;
 
