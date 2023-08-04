@@ -77,10 +77,14 @@
       mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdnpzN2cwMHg0NzNsbXlyeTgyajg3ayJ9.EyOR6OwW23MTmLSUn-2UZg';
 
       const map = new mapboxgl.Map({
-        container: 'map', // container id
-        style: 'mapbox://styles/mapbox/streets-v12', // stylesheet
-        center: [ -122.800303, 48.119783], // starting position [lng, lat]
-        zoom: 11.5 // starting zoom
+        container: 'map', 
+        // container id
+        style: 'mapbox://styles/mapbox/streets-v12', 
+        // stylesheet
+        center: [ -122.800303, 48.119783], 
+        // starting position [lng, lat]
+        zoom: 11.5 
+        // starting zoom
       });
       
       //read in the trees data from the published csv file on google drive
@@ -95,13 +99,15 @@
             alert('Error occured');
         }
       });
-      }
+      } )
+     
       function makeGeoJSON(trees) {
         csv2geojson.csv2geojson(trees, {
           latfield: 'Latitude',
           lonfield: 'Longitude',
           delimiter: ','
         }, function (err, data) {
+        });
           map.on('load', function () {
 
             //Add the layer to the map
