@@ -74,6 +74,105 @@
     </div>
 
     <script>
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdWxleWp5MDgwbjNlcWJtdGo2NGc5dSJ9.-6ltS5rLAaGHYfCGDbhA6g';
+
+      const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/streets-v12', // stylesheet
+        center: [ -122.800303, 48.119783], // starting position [lng, lat]
+        zoom: 11.5 // starting zoom
+      });
+      
+      //read in the trees data from the published csv file on google drive
+      $(document).ready(function () {
+      $.ajax({
+        type: "GET",
+        //YOUR TURN: Replace with csv export link
+        //https://docs.google.com/spreadsheets/d/1Dykqm_ZH6sph7khl2be-50zrHv1tFGlzivRokk7Q9vI/edit?usp=sharing
+        //  url: 'https://docs.google.com/spreadsheets/d/1XiZkEDjf8VXj9aa_HOvmU017jP3zhmfPPtZaR9_yUcE/gviz/tq?tqx=out:csv&sheet=Sheet31',
+        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pub?gid=511350341&single=true&output=csv',
+        dataType: "text",
+        success: function (trees) { makeGeoJSON(trees); }
+      });
+
+      function makeGeoJSON(trees) {
+        csv2geojson.csv2geojson(trees, {
+          latfield: 'Latitude',
+          lonfield: 'Longitude',
+          delimiter: ','
+        }, function (err, data) {
+          map.on('load', function () {
+
+            //Add the layer to the map
+            map.addLayer({
+              'id': 'trees',
+              'type': 'circle',
+              'source': {
+                'type': 'geojson',
+                'data': data
+              },
+              'paint': {
+                'circle-radius': 5,
+                'circle-color': [ 'match',
+                                  ['get', 'trees'],
+                                  'R',
+                                  '#663399',
+                                  '#FF00FF'
+                                  ]
+              }
+            });
+
+            map.addLayer({
+            'id': 'Code2023',
+            'type': 'symbol',
+            'source': 'trees',
+            'layout': {
+            'text-field': ['get', 'Code2023'],
+            'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+            'text-radial-offset': 0.5,
+            'text-justify': 'auto'
+            }
+            });
+
+            // When a click event occurs on a feature in the csvData layer, open a popup at the
+            // location of the feature, with description HTML from its properties.
+            map.on('click', 'trees', function (e) {
+              var coordinates = e.features[0].geometry.coordinates.slice();
+
+              //set popup text
+              //You can adjust the values of the popup to match the headers of your CSV.
+              // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
+               var description = `<h3>` + e.features[0].properties.trees + `</h3>` + `<h4>` + `<b>` + `Address: ` + e.features[0].properties.FullAddress +  `</h4>` +  `<h4>` + `<b>` + `Code: ` + e.features[0].properties.Code2023 + `</h4>` + `</b>` + `<h4>` + `<b>`  + `2022 Notes: ` + e.features[0].properties.Notes2022 + `</h4>` + `</b>`+ `<h4>` + `<b>` ;
+
+              // Ensure that if the map is zoomed out such that multiple
+              // copies of the feature are visible, the popup appears
+              // over the copy being pointed to.
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+              }
+
+              //add Popup to map
+
+              new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+            });
+
+            // Change the cursor to a pointer when the mouse is over the places layer.
+            map.on('mouseenter', 'trees', function () {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+
+            // Change it back to a pointer when it leaves.
+            map.on('mouseleave', 'trees', function () {
+              map.getCanvas().style.cursor = '';
+            });
+
+            var bbox = turf.bbox(data);
+            map.fitBounds(bbox, { padding: 50 });
+
+        
       // Target the params form in the HTML
       const params = document.getElementById('params');
 
@@ -92,8 +191,8 @@
       // Create a LngLat object to use in the marker initialization
       // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
       const lngLat = {
-        lon: Longitude,
-        lat: Latitude
+        lon: lon,
+        lat: lat
       };
 
       // Create a function that sets up the Isochrone API query then makes a fetch call
@@ -147,104 +246,6 @@
         // Make the API call
         getIso();
       });
-      mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdWxleWp5MDgwbjNlcWJtdGo2NGc5dSJ9.-6ltS5rLAaGHYfCGDbhA6g';
-
-      const map = new mapboxgl.Map({
-        container: 'map', // container id
-        style: 'mapbox://styles/mapbox/streets-v12', // stylesheet
-        center: [ -122.800303, 48.119783], // starting position [lng, lat]
-        zoom: 11.5 // starting zoom
-      });
-      
-      //read in the trees data from the published csv file on google drive
-      $(document).ready(function () {
-      $.ajax({
-        type: "GET",
-        //YOUR TURN: Replace with csv export link
-        //https://docs.google.com/spreadsheets/d/1Dykqm_ZH6sph7khl2be-50zrHv1tFGlzivRokk7Q9vI/edit?usp=sharing
-        //  url: 'https://docs.google.com/spreadsheets/d/1XiZkEDjf8VXj9aa_HOvmU017jP3zhmfPPtZaR9_yUcE/gviz/tq?tqx=out:csv&sheet=Sheet31',
-        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pub?gid=511350341&single=true&output=csv',
-        dataType: "text",
-        success: function (trees) { makeGeoJSON(trees); }
-      });
-
-      function makeGeoJSON(trees) {
-        csv2geojson.csv2geojson(trees, {
-          latfield: 'Latitude',
-          lonfield: 'Longitude',
-          delimiter: ','
-        }, function (err, data) {
-          map.on('load', function () {
-
-            //Add the layer to the map
-            map.addLayer({
-              'id': 'trees',
-              'type': 'circle',
-              'source': {
-                'type': 'geojson',
-                'data': data
-              },
-              'paint': {
-                'circle-color': [ 'step',
-                                  ['get', 'Code2023']
-                                 '0', '#a9a9a9',
-                                  '#6b8e23'
-                                  ]
-                      }
-            });
-
-            map.addLayer({
-            'id': 'Code2023',
-            'type': 'symbol',
-            'source': 'trees',
-            'layout': {
-            'text-field': ['get', 'trees'],
-            'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-            'text-radial-offset': 0.5,
-            'text-justify': 'auto'
-            }
-            });
-
-            // When a click event occurs on a feature in the csvData layer, open a popup at the
-            // location of the feature, with description HTML from its properties.
-            map.on('click', 'trees', function (e) {
-              var coordinates = e.features[0].geometry.coordinates.slice();
-
-              //set popup text
-              //You can adjust the values of the popup to match the headers of your CSV.
-              // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
-               var description = `<h3>` + e.features[0].properties.trees + `</h3>` + `<h4>` + `<b>` + `Address: ` + e.features[0].properties.FullAddress +  `</h4>` +  `<h4>` + `<b>` + `Code: ` + e.features[0].properties.Code2023 + `</h4>` + `</b>` + `<h4>` + `<b>`  + `2022 Notes: ` + e.features[0].properties.Notes2022 + `</h4>` + `</b>`+ `<h4>` + `<b>` ;
-
-              // Ensure that if the map is zoomed out such that multiple
-              // copies of the feature are visible, the popup appears
-              // over the copy being pointed to.
-              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-              }
-
-              //add Popup to map
-
-              new mapboxgl.Popup()
-                .setLngLat(coordinates)
-                .setHTML(description)
-                .addTo(map);
-            });
-
-            // Change the cursor to a pointer when the mouse is over the places layer.
-            map.on('mouseenter', 'trees', function () {
-              map.getCanvas().style.cursor = 'pointer';
-            });
-
-            // Change it back to a pointer when it leaves.
-            map.on('mouseleave', 'trees', function () {
-              map.getCanvas().style.cursor = '';
-            });
-
-            var bbox = turf.bbox(data);
-            map.fitBounds(bbox, { padding: 50 });
-
-        
-
 
    
 
