@@ -204,6 +204,7 @@
           `${urlBase}${profile}/${lon},${lat}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
           { method: 'GET' }
         );
+        
         const data = await query.json();
         
         // Set the 'iso' source's data to what's returned by the API query
