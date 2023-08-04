@@ -133,7 +133,8 @@
                         }
             });
       })
-          
+        }
+    }
             // When a click event occurs on a feature in the csvData layer, open a popup at the
             // location of the feature, with description HTML from its properties.
             map.on('click', 'trees', function (e) {
@@ -172,7 +173,7 @@
             map.fitBounds(bbox, { padding: 50 });
 // may need these
         
-          });
+        //  });
 
 // or may not
         
@@ -208,7 +209,7 @@
         const data = await query.json();
         
         // Set the 'iso' source's data to what's returned by the API query
-        map.getSource("iso").setData(data);
+        map.getSource('iso').setData(data);
       }
 
       // When a user changes the value of profile or duration by clicking a button, change the parameter's value and make the API query again
