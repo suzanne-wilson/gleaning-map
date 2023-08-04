@@ -194,7 +194,9 @@
         lon: lon,
         lat: lat
       };
-
+        // Initialize the marker at the query coordinates
+        marker.setLngLat(lngLat).addTo(map);
+            
       // Create a function that sets up the Isochrone API query then makes a fetch call
       async function getIso() {
         const query = await fetch(
