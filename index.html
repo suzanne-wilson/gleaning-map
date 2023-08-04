@@ -74,38 +74,42 @@
     </div>
 
     <script>
+ 
+    var transformRequest = (url, resourceType) => {
+      var isMapboxRequest =
+        url.slice(8, 22) === "api.mapbox.com" ||
+        url.slice(10, 26) === "tiles.mapbox.com";
+      return {
+        url: isMapboxRequest
+          ? url.replace("?", "?pluginName=sheetMapper&")
+          : url
+      };
+    };
       mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdnpzN2cwMHg0NzNsbXlyeTgyajg3ayJ9.EyOR6OwW23MTmLSUn-2UZg';
+ var map = new mapboxgl.Map({
+      container: 'map', // container id
+      style: 'mapbox://styles/mapbox/streets-v12', // YOUR TURN: choose a style: https://docs.mapbox.com/api/maps/#styles
+      center: [-122.75742837715816, 48.1226253432329 ], // starting position [lng, lat]
+      zoom: 12,// starting zoom
+      transformRequest: transformRequest
+    });
 
-      const map = new mapboxgl.Map({
-        container: 'map', 
-        // container id
-        style: 'mapbox://styles/mapbox/streets-v12', 
-        // stylesheet
-        center: [ -122.800303, 48.119783], 
-        // starting position [lng, lat]
-        zoom: 11.5 
-        // starting zoom
-      });
-      
-      //read in the trees data from the published csv file on google drive
-      $(document).ready(function () {
+    $(document).ready(function () {
       $.ajax({
         type: "GET",
         //YOUR TURN: Replace with csv export link
         url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pub?gid=511350341&single=true&output=csv',
         dataType: "text",
         success: function (trees) { makeGeoJSON(trees); }
-        });
-     
+      });
+
       function makeGeoJSON(trees) {
         csv2geojson.csv2geojson(trees, {
           latfield: 'Latitude',
           lonfield: 'Longitude',
           delimiter: ','
         }, function (err, data) {
-        });
-      }
- } )    ;      
+          
       map.on('load', function () {
             //Add the layer to the map
             map.addLayer({
@@ -127,18 +131,6 @@
                                   '#a9a9a9'
                                   ]
                         }
-            });
-
-            map.addLayer({
-            'id': 'Permission2023',
-            'type': 'symbol',
-            'source': 'trees',
-            'layout': {
-            'text-field': ['get', 'Permission2023'],
-            'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-            'text-radial-offset': 0.5,
-            'text-justify': 'auto'
-            }
             });
 
             // When a click event occurs on a feature in the csvData layer, open a popup at the
@@ -177,7 +169,11 @@
 
             var bbox = turf.bbox(data);
             map.fitBounds(bbox, { padding: 50 });
+// may need these
+        
+          });
 
+// or may not
         
       // Target the params form in the HTML
       const params = document.getElementById('params');
