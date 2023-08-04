@@ -149,14 +149,11 @@
             // location of the feature, with description HTML from its properties.
             map.on('click', 'trees', function (e) {
               var coordinates = e.features[0].geometry.coordinates.slice();
-
               //set popup text
-              //You can adjust the values of the popup to match the headers of your CSV.
-              // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
-               var description = `<h3>` + `<h4>` + `<b>` + `Tree type: ` + e.features[0].properties.trees  + `</b>` + `</h4>`  + 
-                                          `<h4>` + `<b>` + `Address: ` + e.features[0].properties.FullAddress  + `</b>  + `</h4>` +  
-                                          `<h4>` + `<b>` + `Code: ` + e.features[0].properties.Permission2023  + `</b> + `</h4>` + 
-                                          `<h4>` + `<b>` + `2022 Notes: ` + e.features[0].properties.Notes2022 + `</b>` + `</h4>` + 
+              var description = `<h3>` + `<h4>` + `<b>` + `Tree type: `  + e.features[0].properties.trees          + `</b>` + `</h4>` + 
+                                         `<h4>` + `<b>` + `Address: `    + e.features[0].properties.FullAddress    + `</b>  + `</h4>` +  
+                                         `<h4>` + `<b>` + `Code: `       + e.features[0].properties.Permission2023 + `</b>  + `</h4>` + 
+                                         `<h4>` + `<b>` + `2022 Notes: ` + e.features[0].properties.Notes2022      + `</b>` + `</h4>` + 
                                  `</h3>` ;
 
               // Ensure that if the map is zoomed out such that multiple
@@ -165,9 +162,7 @@
               while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                 coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
               }
-
               //add Popup to map
-
               new mapboxgl.Popup()
                 .setLngLat(coordinates)
                 .setHTML(description)
@@ -241,10 +236,8 @@
             'features': []
           }
         });
-
         map.addLayer(
-          {
-            'id': 'isoLayer',
+          {  'id': 'isoLayer',
             'type': 'fill',
             'source': 'iso',
             'layout': {},
@@ -255,7 +248,7 @@
           },
           'poi-label'
         );
-
+  
         // Initialize the marker at the query coordinates
         marker.setLngLat(lngLat).addTo(map);
 
