@@ -16,6 +16,10 @@
       rel="stylesheet"
     />
     <script src="https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript"></script>
+    <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script> 
     <style>
       body {
         margin: 0;
@@ -70,15 +74,6 @@
     </div>
 
     <script>
-      mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdWxleWp5MDgwbjNlcWJtdGo2NGc5dSJ9.-6ltS5rLAaGHYfCGDbhA6g';
-
-      const map = new mapboxgl.Map({
-        container: 'map', // container id
-        style: 'mapbox://styles/mapbox/streets-v12', // stylesheet
-        center: [ -122.800303, 48.119783], // starting position [lng, lat]
-        zoom: 11.5 // starting zoom
-      });
-
       // Target the params form in the HTML
       const params = document.getElementById('params');
 
@@ -97,8 +92,8 @@
       // Create a LngLat object to use in the marker initialization
       // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
       const lngLat = {
-        lon: lon,
-        lat: lat
+        lon: Longitude,
+        lat: Latitude
       };
 
       // Create a function that sets up the Isochrone API query then makes a fetch call
@@ -152,15 +147,17 @@
         // Make the API call
         getIso();
       });
-      //add in the geojson trees source
-      map.on('load', () => {
-      map.addSource('trees', {
-        type: 'geojson',
-      // Use a URL for the value for the `data` property.
-        data: 'trees.geojson'
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdWxleWp5MDgwbjNlcWJtdGo2NGc5dSJ9.-6ltS5rLAaGHYfCGDbhA6g';
+
+      const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/streets-v12', // stylesheet
+        center: [ -122.800303, 48.119783], // starting position [lng, lat]
+        zoom: 11.5 // starting zoom
       });
-       //read in the trees data from the published csv file on google drive
-    $(document).ready(function () {
+      
+      //read in the trees data from the published csv file on google drive
+      $(document).ready(function () {
       $.ajax({
         type: "GET",
         //YOUR TURN: Replace with csv export link
@@ -188,14 +185,12 @@
                 'data': data
               },
               'paint': {
-                'circle-radius': 5,
-                'circle-color': [ 'match',
-                                  ['get', 'trees'],
-                                  'R',
-                                  '#663399',
-                                  '#FF00FF'
+                'circle-color': [ 'step',
+                                  ['get', 'Code2023']
+                                 '0', '#a9a9a9',
+                                  '#6b8e23'
                                   ]
-              }
+                      }
             });
 
             map.addLayer({
@@ -203,7 +198,7 @@
             'type': 'symbol',
             'source': 'trees',
             'layout': {
-            'text-field': ['get', 'Code2023'],
+            'text-field': ['get', 'trees'],
             'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
             'text-radial-offset': 0.5,
             'text-justify': 'auto'
@@ -236,17 +231,22 @@
             });
 
             // Change the cursor to a pointer when the mouse is over the places layer.
-            map.on('mouseenter', 'Orgmapdata', function () {
+            map.on('mouseenter', 'trees', function () {
               map.getCanvas().style.cursor = 'pointer';
             });
 
             // Change it back to a pointer when it leaves.
-            map.on('mouseleave', 'places', function () {
+            map.on('mouseleave', 'trees', function () {
               map.getCanvas().style.cursor = '';
             });
 
             var bbox = turf.bbox(data);
             map.fitBounds(bbox, { padding: 50 });
+
+        
+
+
+   
 
           });
 
