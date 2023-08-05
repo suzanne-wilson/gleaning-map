@@ -112,7 +112,7 @@
         ).then(data => data.json())
          .then(success => isochroneA = success);
         
-        const data = await query.json();
+       // const data = await query.json();
         
         // Set the 'iso' source's data to what's returned by the API query
         map.getSource('iso').setData(data);
