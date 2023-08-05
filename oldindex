@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Demo: Get started with the Isochrone API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Mapbox GL JS -->
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <!-- Mapbox Assembly -->
+    <link
+      href="https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript"></script>
+    <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script> 
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+
+    <div class="absolute fl my24 mx24 py24 px24 bg-gray-faint round">
+      <form id="params">
+        <h4 class="txt-m txt-bold mb6">Choose a travel mode:</h4>
+        <div class="mb12 mr12 toggle-group align-center">
+          <label class="toggle-container">
+            <input name="profile" type="radio" value="walking" />
+            <div class="toggle toggle--active-null toggle--null">Walking</div>
+          </label>
+          <label class="toggle-container">
+            <input name="profile" type="radio" value="cycling" checked />
+            <div class="toggle toggle--active-null toggle--null">Cycling</div>
+          </label>
+          <label class="toggle-container">
+            <input name="profile" type="radio" value="driving" />
+            <div class="toggle toggle--active-null toggle--null">Driving</div>
+          </label>
+        </div>
+        <h4 class="txt-m txt-bold mb6">Choose a maximum duration:</h4>
+        <div class="mb12 mr12 toggle-group align-center">
+          <label class="toggle-container">
+            <input name="duration" type="radio" value="10" checked />
+            <div class="toggle toggle--active-null toggle--null">10 min</div>
+          </label>
+          <label class="toggle-container">
+            <input name="duration" type="radio" value="20" />
+            <div class="toggle toggle--active-null toggle--null">20 min</div>
+          </label>
+          <label class="toggle-container">
+            <input name="duration" type="radio" value="30" />
+            <div class="toggle toggle--active-null toggle--null">30 min</div>
+          </label>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdWxleWp5MDgwbjNlcWJtdGo2NGc5dSJ9.-6ltS5rLAaGHYfCGDbhA6g';
+
+      const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/streets-v12', // stylesheet
+        center: [ -122.800303, 48.119783], // starting position [lng, lat]
+        zoom: 11.5 // starting zoom
+      });
+      
+      //read in the trees data from the published csv file on google drive
+      $(document).ready(function () {
+      $.ajax({
+        type: "GET",
+        //YOUR TURN: Replace with csv export link
+        //https://docs.google.com/spreadsheets/d/1Dykqm_ZH6sph7khl2be-50zrHv1tFGlzivRokk7Q9vI/edit?usp=sharing
+        //  url: 'https://docs.google.com/spreadsheets/d/1XiZkEDjf8VXj9aa_HOvmU017jP3zhmfPPtZaR9_yUcE/gviz/tq?tqx=out:csv&sheet=Sheet31',
+        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pub?gid=511350341&single=true&output=csv',
+        dataType: "text",
+        success: function (trees) { makeGeoJSON(trees); }
+      });
+
+      function makeGeoJSON(trees) {
+        csv2geojson.csv2geojson(trees, {
+          latfield: 'Latitude',
+          lonfield: 'Longitude',
+          delimiter: ','
+        }, function (err, data) {
+          map.on('load', function () {
+
+            //Add the layer to the map
+            map.addLayer({
+              'id': 'trees',
+              'type': 'circle',
+              'source': {
+                'type': 'geojson',
+                'data': data
+              },
+              'paint': {
+                'circle-radius': 5,
+                'circle-color': [ 'match',
+                                  ['get', 'trees'],
+                                  'R',
+                                  '#663399',
+                                  '#FF00FF'
+                                  ]
+              }
+            });
+
+            map.addLayer({
+            'id': 'Code2023',
+            'type': 'symbol',
+            'source': 'trees',
+            'layout': {
+            'text-field': ['get', 'Code2023'],
+            'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+            'text-radial-offset': 0.5,
+            'text-justify': 'auto'
+            }
+            });
+
+            // When a click event occurs on a feature in the csvData layer, open a popup at the
+            // location of the feature, with description HTML from its properties.
+            map.on('click', 'trees', function (e) {
+              var coordinates = e.features[0].geometry.coordinates.slice();
+
+              //set popup text
+              //You can adjust the values of the popup to match the headers of your CSV.
+              // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
+               var description = `<h3>` + e.features[0].properties.trees + `</h3>` + `<h4>` + `<b>` + `Address: ` + e.features[0].properties.FullAddress +  `</h4>` +  `<h4>` + `<b>` + `Code: ` + e.features[0].properties.Code2023 + `</h4>` + `</b>` + `<h4>` + `<b>`  + `2022 Notes: ` + e.features[0].properties.Notes2022 + `</h4>` + `</b>`+ `<h4>` + `<b>` ;
+
+              // Ensure that if the map is zoomed out such that multiple
+              // copies of the feature are visible, the popup appears
+              // over the copy being pointed to.
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+              }
+
+              //add Popup to map
+
+              new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+            });
+
+            // Change the cursor to a pointer when the mouse is over the places layer.
+            map.on('mouseenter', 'trees', function () {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+
+            // Change it back to a pointer when it leaves.
+            map.on('mouseleave', 'trees', function () {
+              map.getCanvas().style.cursor = '';
+            });
+
+            var bbox = turf.bbox(data);
+            map.fitBounds(bbox, { padding: 50 });
+
+        
+      // Target the params form in the HTML
+      const params = document.getElementById('params');
+
+      // Create variables to use in getIso()
+      const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
+      const lon = -122.800303;
+      const lat = 48.119783;
+      let profile = 'cycling';
+      let minutes = 10;
+
+      // Set up a marker that you can use to show the query's coordinates
+      const marker = new mapboxgl.Marker({
+        'color': '#314ccd'
+      });
+
+      // Create a LngLat object to use in the marker initialization
+      // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
+      const lngLat = {
+        lon: lon,
+        lat: lat
+      };
+
+      // Create a function that sets up the Isochrone API query then makes a fetch call
+      async function getIso() {
+        const query = await fetch(
+          `${urlBase}${profile}/${lon},${lat}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
+          { method: 'GET' }
+        );
+        const data = await query.json();
+        // Set the 'iso' source's data to what's returned by the API query
+        map.getSource('iso').setData(data);
+      }
+
+      // When a user changes the value of profile or duration by clicking a button, change the parameter's value and make the API query again
+      params.addEventListener('change', (event) => {
+        if (event.target.name === 'profile') {
+          profile = event.target.value;
+        } else if (event.target.name === 'duration') {
+          minutes = event.target.value;
+        }
+        getIso();
+      });
+
+      map.on('load', () => {
+        // When the map loads, add the source and layer
+        map.addSource('iso', {
+          type: 'geojson',
+          data: {
+            'type': 'FeatureCollection',
+            'features': []
+          }
+        });
+
+        map.addLayer(
+          {
+            'id': 'isoLayer',
+            'type': 'fill',
+            'source': 'iso',
+            'layout': {},
+            'paint': {
+              'fill-color': '#5a3fc0',
+              'fill-opacity': 0.3
+            }
+          },
+          'poi-label'
+        );
+
+        // Initialize the marker at the query coordinates
+        marker.setLngLat(lngLat).addTo(map);
+
+        // Make the API call
+        getIso();
+      });
+
+   
+
+          });
+
+        });
+      };
+    });
+
+
+    </script>
+  </body>
+</html>
