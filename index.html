@@ -126,7 +126,19 @@
               'source': {
                 'type': 'geojson',
                 'data': data
-              }
+              },
+               'paint': {
+                'circle-radius': 4,
+                'circle-color': [ 'match',
+                                  ['get', 'Permission2023'],
+                                  'yes',
+                                  '#663399',
+                                  'no',
+                                  '#a9a9a9',
+                                  'na',
+                                  '#a9a9a9'
+                                  ]
+                        }
             });
 
 
