@@ -102,7 +102,6 @@
         lon: lon,
         lat: lat
       };
-      var global isochroneA;
       
       // Create a function that sets up the Isochrone API query then makes a fetch call
       async function getIso() {
@@ -112,7 +111,7 @@
         );
         
         const data = await query.json();
-        const isochroneA = data;
+        console.log(data);
         // Set the 'iso' source's data to what's returned by the API query
         map.getSource('iso').setData(data);
       }
