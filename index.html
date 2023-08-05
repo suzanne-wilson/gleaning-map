@@ -129,14 +129,11 @@
               },
                'paint': {
                 'circle-radius': 4,
-                'circle-color':{
-                                property: 'MarkerType',
-                                type: 'categorical',
-                                stops: [ 'match',
+                'circle-color': [ 'match',
                                   ['get', 'Permission2023'],
-                                  ['yes', '#663399'],
-                                  ['no', '#a9a9a9'],
-                                  ['na', '#a9a9a9']
+                                  'yes', '#663399',
+                                  'no', '#a9a9a9',
+                                  'na', '#a9a9a9'
                                   ]
                         }
                }
