@@ -94,31 +94,31 @@
     
       mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdnpzN2cwMHg0NzNsbXlyeTgyajg3ayJ9.EyOR6OwW23MTmLSUn-2UZg';
     
-      var map = new mapboxgl.Map({
-                    container: 'map', // container id
-                    style: 'mapbox://styles/mapbox/streets-v12', // YOUR TURN: choose a style: https://docs.mapbox.com/api/maps/#styles
-                    center: [-122.75742837715816, 48.1226253432329 ], // starting position [lng, lat]
-                    zoom: 12,// starting zoom
-                    transformRequest: transformRequest
+ var map = new mapboxgl.Map({
+      container: 'map', // container id
+      style: 'mapbox://styles/mapbox/streets-v11', // YOUR TURN: choose a style: https://docs.mapbox.com/api/maps/#styles
+      center: [ -122.800303, 48.119783], // starting position [lng, lat]
+      zoom: 12,// starting zoom
+      transformRequest: transformRequest
     });
-
+   
     $(document).ready(function () {
       $.ajax({
         type: "GET",
         //YOUR TURN: Replace with csv export link
-        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pub?gid=511350341&single=true&output=csv',
+        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pubhtml?gid=511350341&single=true',
         dataType: "text",
         success: function (trees) { makeGeoJSON(trees); }
       });
-   
+
       function makeGeoJSON(trees) {
         csv2geojson.csv2geojson(trees, {
           latfield: 'Latitude',
           lonfield: 'Longitude',
           delimiter: ','
         }, function (err, data) {
-          
-      map.on('load', function () {
+          map.on('load', function () {
+            
             //Add the layer to the map
             map.addLayer({
               'id': 'trees',
@@ -126,34 +126,19 @@
               'source': {
                 'type': 'geojson',
                 'data': data
-              },
-              'paint': {
-                'circle-radius': 4,
-                'circle-color': [ 'match',
-                                  ['get', 'Permission2023'],
-                                  'yes',
-                                  '#663399',
-                                  'no',
-                                  '#a9a9a9',
-                                  'na',
-                                  '#a9a9a9'
-                                  ]
-                        }
+              }
             });
-      })
-        })
-    }
-       });
+
+
             // When a click event occurs on a feature in the csvData layer, open a popup at the
             // location of the feature, with description HTML from its properties.
             map.on('click', 'trees', function (e) {
               var coordinates = e.features[0].geometry.coordinates.slice();
+
               //set popup text
-              var description = `<h3>` + `<h4>` + `<b>` + `Tree type: `  + e.features[0].properties.trees          + `</b>` + `</h4>` + 
-                                         `<h4>` + `<b>` + `Address: `    + e.features[0].properties.FullAddress    + `</b>`  + `</h4>` +  
-                                         `<h4>` + `<b>` + `Permission for 2023: ` + e.features[0].properties.Permission2023 + `</b>`  + `</h4>` + 
-                                         `<h4>` + `<b>` + `2022 Notes: ` + e.features[0].properties.Notes2022      + `</b>` + `</h4>` + 
-                                 `</h3>` ;
+              //You can adjust the values of the popup to match the headers of your CSV.
+              // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
+              var description = `<h3>` + e.features[0].properties.Owner + `</h3>` + `<h4>` + `<b>` + `Address: ` + e.features[0].properties.Address +  `</h4>` +  `<h4>` + `<b>` + `Watcher: ` + e.features[0].properties.Watcher2022 + `</h4>` + `</b>` + `<h4>` + `<b>` + `2022 Code: ` + e.features[0].properties.Code2022 + `</h4>`  + `</b>`  + `<h4>` + `<b>` + `Trees: ` + `</b>` + e.features[0].properties.TreeType + `</h4>`+ `<h4>` + `<b>` + `City: ` + e.features[0].properties.ShortCity + `</h4>`  + `</b>` + `<h4>` + `<b>` + `2022 Notes: ` + e.features[0].properties.Notes2022 + `</h4>` + `</b>`+ `<h4>` + `<b>` + `Ladders: ` + e.features[0].properties.Ladders + `</h4>` + `</b>` + `<h4>` + `<b>` + `Location Notes: ` + e.features[0].properties.LocationDescription +  `</h4>` + `</b>`;
 
               // Ensure that if the map is zoomed out such that multiple
               // copies of the feature are visible, the popup appears
@@ -161,7 +146,9 @@
               while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                 coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
               }
+
               //add Popup to map
+
               new mapboxgl.Popup()
                 .setLngLat(coordinates)
                 .setHTML(description)
@@ -174,19 +161,24 @@
             });
 
             // Change it back to a pointer when it leaves.
-            map.on('mouseleave', 'trees', function () {
+            map.on('mouseleave', 'places', function () {
               map.getCanvas().style.cursor = '';
             });
 
             var bbox = turf.bbox(data);
             map.fitBounds(bbox, { padding: 50 });
-            // may need these
-        
-            //  });
 
-            // or may not
-            
+          });
 
-    </script>
-  </body>
+        });
+      };
+    });
+
+
+
+
+  </script>
+
+</body>
+
 </html>
