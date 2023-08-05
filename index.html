@@ -10,6 +10,7 @@
       href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
       rel="stylesheet"
     />
+    require "mapbox-sdk"
     <!-- Mapbox Assembly -->
     <link
       href="https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.min.css"
@@ -153,7 +154,7 @@
         // Make the API call
         getIso();
 
-        require "mapbox-sdk"
+
         Mapbox.access_token = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdnpzN2cwMHg0NzNsbXlyeTgyajg3ayJ9.EyOR6OwW23MTmLSUn-2UZg'
         
         isochrone = Mapbox::Isochrone.isochrone("walking", "-118.22258,33.99038", {contours_minutes: [5,10,15]})
