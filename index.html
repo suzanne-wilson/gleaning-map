@@ -102,7 +102,7 @@
         lon: lon,
         lat: lat
       };
-      var isochroneA;
+      var global isochroneA;
       
       // Create a function that sets up the Isochrone API query then makes a fetch call
       async function getIso() {
@@ -116,7 +116,7 @@
         // Set the 'iso' source's data to what's returned by the API query
         map.getSource('iso').setData(data);
       }
-       
+       console.log(isochroneA);
       // When a user changes the value of profile or duration by clicking a button, change the parameter's value and make the API query again
       params.addEventListener('change', (event) => {
         if (event.target.name === 'profile') {
