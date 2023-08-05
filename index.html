@@ -90,17 +90,6 @@
 <div id="map"></div>
   
   <script>
-
-//    var transformRequest = (url, resourceType) => {
-//      var isMapboxRequest =
-//        url.slice(8, 22) === "api.mapbox.com" ||
-//        url.slice(10, 26) === "tiles.mapbox.com";
-//      return {
-//        url: isMapboxRequest
-//          ? url.replace("?", "?pluginName=sheetMapper&")
-//          : url
-//      };
-//    };
     //YOUR TURN: add your Mapbox token
     
       mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdnpzN2cwMHg0NzNsbXlyeTgyajg3ayJ9.EyOR6OwW23MTmLSUn-2UZg';
@@ -111,9 +100,7 @@
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
       center: [ -122.800303, 48.119783], // starting position [lng, lat]
       zoom: 12
-        // starting zoom
-      // transformRequest: transformRequest
-      });
+           });
    
     $(document).ready(function () {
       $.ajax({
