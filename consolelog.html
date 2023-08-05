@@ -105,13 +105,13 @@
           { method: 'GET' }
         );
         const data = await query.json();
-        // Set the 'iso' source's data to what's returned by the API query
-        map.getSource('iso').setData(data);
+        console.log(data);
+        
       }
 
         // Make the API call
         getIso();
-        console.log(data);
+
       });
     </script>
   </body>
