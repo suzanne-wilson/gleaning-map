@@ -142,11 +142,11 @@
     //YOUR TURN: add your Mapbox token
     
     mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdnpzN2cwMHg0NzNsbXlyeTgyajg3ayJ9.EyOR6OwW23MTmLSUn-2UZg'; //Mapbox token 
-    var map = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
       container: 'map', // container id
       style: 'mapbox://styles/mapbox/streets-v12', // YOUR TURN: choose a style: https://docs.mapbox.com/api/maps/#styles
       center: [ -122.800303, 48.119783], // starting position [lng, lat]
-      zoom: 12,// starting zoom
+      zoom: 11.5,// starting zoom
       transformRequest: transformRequest
     });
 
@@ -218,7 +218,7 @@
             });
 
             // Change it back to a pointer when it leaves.
-            map.on('mouseleave', 'places', function () {
+            map.on('mouseleave', 'csvData', function () {
               map.getCanvas().style.cursor = '';
             });
 
