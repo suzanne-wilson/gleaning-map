@@ -117,7 +117,7 @@
       $.ajax({
         type: "GET",
         //YOUR TURN: Replace with csv export link
-        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pub?gid=1167870779&single=true&output=csv',
+        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSAh3-jxViLIG7oKUe7YXak-mPsJC-uL2EiDlk-FWZfUvjmk77IAuyYCAXf8UT0-i-pQYVgfVJ3dY2L/pub?gid=1422191100&single=true&output=csv',
         dataType: "text",
         success: function (csvData) { makeGeoJSON(csvData); }
       });
@@ -141,12 +141,13 @@
               },
               'paint': {
                 'circle-radius': 5,
-                'circle-color': [ 'match',
-                                  ['get', 'Permission2023'],
-                                  'yes',
-                                  '#663399',
-                                  '#a9a9a9'
-                                  ]
+                'circle-color': "CodeColor23"
+       //           [ 'match',
+         //                         ['get', 'Permission2023'],
+         //                         'yes',
+         //                         '#663399',
+         //                         '#a9a9a9'
+         //                         ]
               }
             });
 
