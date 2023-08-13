@@ -109,45 +109,11 @@
       container: 'map', // container id
       style: 'mapbox://styles/mapbox/streets-v12', // YOUR TURN: choose a style: https://docs.mapbox.com/api/maps/#styles
       center: [ -122.800303, 48.119783], // starting position [lng, lat]
-      max_zoom: 18,
       zoom: 11.5,// starting zoom
       transformRequest: transformRequest
     });
 
-      // Create variables to use in getIso()
-      const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
-      const lon = -122.800303;
-      const lat = 48.119783;
-      let profile = 'walking';
-      let minutes = 10;
-
-      const marker = new mapboxgl.Marker({
-        'color': '#314ccd'
-      })
-      .setLngLat([lon, lat])
-      .addTo(map); // add the marker to the map
-    
-      // Create a function that sets up the Isochrone API query then makes a fetch call
-      async function getIso() {
-        const query = await fetch(
-          `${urlBase}${profile}/${lon},${lat}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
-          { method: 'GET' }
-        );
-        
-        const data2 = await query.json();
-        
-        // Set the 'iso' source's data to what's returned by the API query
-        map.getSource('iso').setData(data2);
-      }
-      
-      // Create a LngLat object to use in the marker initialization
-      // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
-      const lngLat = {
-        lon: lon,
-        lat: lat
-      };
-    
-      $(document).ready(function () {
+    $(document).ready(function () {
       $.ajax({
         type: "GET",
         //YOUR TURN: Replace with csv export link
@@ -162,8 +128,8 @@
           lonfield: 'Longitude',
           delimiter: ','
         }, function (err, data) {
-           map.on('load', () => {
-        
+          map.on('load', function () {
+
              //Add the layer to the map
             map.addLayer({
               'id': 'csvData',
@@ -173,26 +139,18 @@
                 'data': data
               },
               'paint': {
-                'circle-radius': 3,
+                'circle-radius': 5,
                 'circle-color': 
                 [ 'match',
-                        ['get', 'Code'],
-                        [1, 'bright green'],
-                        [2, 'green'],
-                        [3, 'light grey'],
-                        [4, 'light green'],
-                        [5, 'dark grey'],
-                        [6, 'light grey'],
-                        [7, 'orange'],
-                        [8, 'dark grey'],
-                        [9, 'grey'],
-                        [90, 'pink'],
-                        [99, 'purple'],
-                        [0, 'black'],
-                         'dark grey' ],
-         //       'filter': ['>', 'Code', '0']
+                                 ['get', 'Code'],
+                                  '1',
+                                  '#663399',
+                                  '#a9a9a9'
+                                  ],
+        //        'filter': ['==', '$type', 'Polygon']
               }
             });
+
             // When a click event occurs on a feature in the csvData layer, open a popup at the
             // location of the feature, with description HTML from its properties.
             map.on('click', 'csvData', function (e) {
@@ -218,28 +176,6 @@
                 .addTo(map);
             });
 
-        // When the map loads, add the source and layer
-//        map.addSource('iso', {
-//          type: 'geojson',
-//          data: {
-//            'type': 'FeatureCollection',
-//            'features': []
-//          }
-//        });
-
-//        map.addLayer(
-//          {
-//            'id': 'isoLayer',
-//            'type': 'fill',
-//            'source': 'iso',
-//            'layout': {},
-//            'paint': {
-//              'fill-color': '#5a3fc0',
-//              'fill-opacity': 0.3
-//            }
-//          },
-//          'poi-label'
-//        );
             // Change the cursor to a pointer when the mouse is over the places layer.
             map.on('mouseenter', 'csvData', function () {
               map.getCanvas().style.cursor = 'pointer';
@@ -253,14 +189,74 @@
             var bbox = turf.bbox(data);
             map.fitBounds(bbox, { padding: 50 });
 
-        // Make the API call
-//        getIso();
-        
           });
 
         });
       };
     });
+
+
+      // Create variables to use in getIso()
+      const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
+      const lon = -122.800303;
+      const lat = 48.119783;
+      let profile = 'walking';
+      let minutes = 10;
+
+      const marker = new mapboxgl.Marker({
+        'color': '#314ccd'
+      })
+      .setLngLat([lon, lat])
+      .addTo(map); // add the marker to the map
+    
+      // Create a function that sets up the Isochrone API query then makes a fetch call
+      async function getIso() {
+        const query = await fetch(
+          `${urlBase}${profile}/${lon},${lat}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
+          { method: 'GET' }
+        );
+        
+        const data = await query.json();
+        
+        // Set the 'iso' source's data to what's returned by the API query
+        map.getSource('iso').setData(data);
+      }
+      
+      // Create a LngLat object to use in the marker initialization
+      // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
+      const lngLat = {
+        lon: lon,
+        lat: lat
+      };
+      map.on('load', () => {
+        // When the map loads, add the source and layer
+        map.addSource('iso', {
+          type: 'geojson',
+          data: {
+            'type': 'FeatureCollection',
+            'features': []
+          }
+        });
+
+        map.addLayer(
+          {
+            'id': 'isoLayer',
+            'type': 'fill',
+            'source': 'iso',
+            'layout': {},
+            'paint': {
+              'fill-color': '#5a3fc0',
+              'fill-opacity': 0.3
+            }
+          },
+          'poi-label'
+        );
+
+        // Make the API call
+        getIso();
+        
+      });
+    
   </script>
 
 </body>
