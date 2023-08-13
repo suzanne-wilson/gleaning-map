@@ -168,23 +168,25 @@
           map.on('load', function () {
 
             //Add the layer to the map
- //           map.addLayer({
-  //            'id': 'csvData',
-//              'type': 'circle',
- //             'source': {
-//                'type': 'geojson',
-//                'data': data
-//              },
-//              'paint': {
- //               'circle-radius': 5,
-//                'circle-color': [ 'match',
-//                                  ['get', 'Permission2023'],
-//                                  'yes',
-//                                  '#663399',
-//                                  '#a9a9a9'
-//                                  ]
-//              }
-//            });
+             //Add the layer to the map
+            map.addLayer({
+              'id': 'csvData',
+              'type': 'circle',
+              'source': {
+                'type': 'geojson',
+                'data': data2
+              },
+              'paint': {
+                'circle-radius': 5,
+                'circle-color': [ 'match',
+                                  ['get', 'Permission2023'],
+                                  'yes',
+                                  '#663399',
+                                  '#a9a9a9'
+                                  ]
+              }
+            });
+
 
 
             // When a click event occurs on a feature in the csvData layer, open a popup at the
@@ -293,24 +295,6 @@
           },
           'poi-label'
         );
-            //Add the layer to the map
-            map.addLayer({
-              'id': 'csvData',
-              'type': 'circle',
-              'source': {
-                'type': 'geojson',
-                'data': data2
-              },
-              'paint': {
-                'circle-radius': 5,
-                'circle-color': [ 'match',
-                                  ['get', 'Permission2023'],
-                                  'yes',
-                                  '#663399',
-                                  '#a9a9a9'
-                                  ]
-              }
-            });
 
         // Make the API call
         getIso();
