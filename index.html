@@ -259,16 +259,13 @@
         // Set the 'iso' source's data to what's returned by the API query
         map.getSource('iso').setData(data);
       }
-const marker = new mapboxgl.Marker({
-  color: '#314ccd'
-});
-
-// Create a LngLat object to use in the marker initialization
-// https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
-const lngLat = {
-  lon: lon,
-  lat: lat
-};
+      
+      // Create a LngLat object to use in the marker initialization
+      // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
+      const lngLat = {
+        lon: lon,
+        lat: lat
+      };
       map.on('load', () => {
         // When the map loads, add the source and layer
         map.addSource('iso', {
@@ -292,9 +289,7 @@ const lngLat = {
           },
           'poi-label'
         );
-// Initialize the marker at the query coordinates
-marker.setLngLat(lngLat).addTo(map);
-        
+
         // Make the API call
         getIso();
         
