@@ -140,13 +140,22 @@
                 'data': data
               },
               'paint': {
-                'circle-radius': 5,
+                'circle-radius': 3,
                 'circle-color': 
                 [ 'match',
-                                 ['get', 'Code'],
-                                  '1',
-                                  '#663399',
-                                  '#a9a9a9'
+                        ['get', 'Code'],
+                        [1, 'bright green'],
+                        [2, 'green'],
+                        [3, 'light grey'],
+                        [4, 'light green'],
+                        [5, 'dark grey'],
+                        [6, 'light grey'],
+                        [7, 'orange'],
+                        [8, 'dark grey'],
+                        [9, 'grey'],
+                        [90, 'pink'],
+                        [99, 'purple'],
+                        [0, 'black']
                                   ],
                 'filter': ['>', 'Code', '0']
               }
