@@ -1,0 +1,62 @@
+
+      // Create variables to use in getIso()
+      const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
+      const lon = -122.800303;
+      const lat = 48.119783;
+      let profile = 'walking';
+      let minutes = 10;
+
+      const marker = new mapboxgl.Marker({
+        'color': '#314ccd'
+      })
+      .setLngLat([lon, lat])
+      .addTo(map); // add the marker to the map
+    
+      // Create a function that sets up the Isochrone API query then makes a fetch call
+      async function getIso() {
+        const query = await fetch(
+          `${urlBase}${profile}/${lon},${lat}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`,
+          { method: 'GET' }
+        );
+        
+        const data = await query.json();
+        
+        // Set the 'iso' source's data to what's returned by the API query
+        map.getSource('iso').setData(data);
+      }
+      
+      // Create a LngLat object to use in the marker initialization
+      // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
+      const lngLat = {
+        lon: lon,
+        lat: lat
+      };
+      map.on('load', () => {
+        // When the map loads, add the source and layer
+        map.addSource('iso', {
+          type: 'geojson',
+          data: {
+            'type': 'FeatureCollection',
+            'features': []
+          }
+        });
+
+        map.addLayer(
+          {
+            'id': 'isoLayer',
+            'type': 'fill',
+            'source': 'iso',
+            'layout': {},
+            'paint': {
+              'fill-color': '#5a3fc0',
+              'fill-opacity': 0.3
+            }
+          },
+          'poi-label'
+        );
+
+        // Make the API call
+        getIso();
+        
+      });
+    
