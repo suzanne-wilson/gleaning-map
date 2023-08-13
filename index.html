@@ -128,7 +128,7 @@
 
   <div id='map'></div>
   <script>
-
+  // SHEET MAPPER CODE
     var transformRequest = (url, resourceType) => {
       var isMapboxRequest =
         url.slice(8, 22) === "api.mapbox.com" ||
@@ -241,18 +241,12 @@
       let profile = 'walking';
       let minutes = 10;
 
-      // Set up a marker that you can use to show the query's coordinates
       const marker = new mapboxgl.Marker({
         'color': '#314ccd'
-      });
-
-      // Create a LngLat object to use in the marker initialization
-      // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
-      const lngLat = {
-        lon: lon,
-        lat: lat
-      };
-      
+      })
+      .setLngLat([lon, lat])
+      .addTo(map); // add the marker to the map
+    
       // Create a function that sets up the Isochrone API query then makes a fetch call
       async function getIso() {
         const query = await fetch(
@@ -261,8 +255,7 @@
         );
         
         const data = await query.json();
-
-       // console.log(data);
+        
         // Set the 'iso' source's data to what's returned by the API query
         map.getSource('iso').setData(data);
       }
@@ -300,9 +293,6 @@
           },
           'poi-label'
         );
-
-        // Initialize the marker at the query coordinates
-        marker.setLngLat(lngLat).addTo(map);
 
         // Make the API call
         getIso();
