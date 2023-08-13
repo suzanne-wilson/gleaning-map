@@ -134,10 +134,10 @@
           { method: 'GET' }
         );
         
-        const data = await query.json();
+        const data2 = await query.json();
         
         // Set the 'iso' source's data to what's returned by the API query
-        map.getSource('iso').setData(data);
+        map.getSource('iso').setData(data2);
       }
       
       // Create a LngLat object to use in the marker initialization
@@ -146,7 +146,8 @@
         lon: lon,
         lat: lat
       };
-        $(document).ready(function () {
+    
+      $(document).ready(function () {
       $.ajax({
         type: "GET",
         //YOUR TURN: Replace with csv export link
