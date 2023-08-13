@@ -139,7 +139,7 @@
                 'data': data
               },
               'paint': {
-                'circle-radius': 3,
+                'circle-radius': 5,
                 'circle-color': 
                 [ 'match',
                                  ['get', 'Code'],
@@ -195,7 +195,7 @@
               map.getCanvas().style.cursor = '';
             });
 
-            var bbox = turf.bbox(data);
+            var bbox = turf.bbox(csvData);
             map.fitBounds(bbox, { padding: 50 });
 
           });
