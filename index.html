@@ -160,6 +160,12 @@
       });
 
       function makeGeoJSON(csvData) {
+        data2 =         csv2geojson.csv2geojson(csvData, {
+          latfield: 'Latitude', 
+          lonfield: 'Longitude',
+          delimiter: ','
+        }, function (err, data) {
+        });
         csv2geojson.csv2geojson(csvData, {
           latfield: 'Latitude', 
           lonfield: 'Longitude',
@@ -299,7 +305,7 @@
               'type': 'circle',
               'source': {
                 'type': 'geojson',
-                'data': data
+                'data': data2
               },
               'paint': {
                 'circle-radius': 5,
