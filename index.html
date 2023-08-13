@@ -114,98 +114,6 @@
       transformRequest: transformRequest
     });
 
-    $(document).ready(function () {
-      $.ajax({
-        type: "GET",
-        //YOUR TURN: Replace with csv export link
-        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSAh3-jxViLIG7oKUe7YXak-mPsJC-uL2EiDlk-FWZfUvjmk77IAuyYCAXf8UT0-i-pQYVgfVJ3dY2L/pub?output=csv',
-        dataType: "text",
-        success: function (csvData) { makeGeoJSON(csvData); }
-      });
-
-      function makeGeoJSON(csvData) {
-        csv2geojson.csv2geojson(csvData, {
-          latfield: 'Latitude', 
-          lonfield: 'Longitude',
-          delimiter: ','
-        }, function (err, data) {
-          map.on('load', function () {
-
-             //Add the layer to the map
-            map.addLayer({
-              'id': 'csvData',
-              'type': 'circle',
-              'source': {
-                'type': 'geojson',
-                'data': data
-              },
-              'paint': {
-                'circle-radius': 3,
-                'circle-color': 
-                [ 'match',
-                        ['get', 'Code'],
-                        [1, 'bright green'],
-                        [2, 'green'],
-                        [3, 'light grey'],
-                        [4, 'light green'],
-                        [5, 'dark grey'],
-                        [6, 'light grey'],
-                        [7, 'orange'],
-                        [8, 'dark grey'],
-                        [9, 'grey'],
-                        [90, 'pink'],
-                        [99, 'purple'],
-                        [0, 'black'],
-                         'dark grey' ],
-         //       'filter': ['>', 'Code', '0']
-              }
-            });
-
-            // When a click event occurs on a feature in the csvData layer, open a popup at the
-            // location of the feature, with description HTML from its properties.
-            map.on('click', 'csvData', function (e) {
-              var coordinates = e.features[0].geometry.coordinates.slice();
-
-              //set popup text
-              //You can adjust the values of the popup to match the headers of your CSV.
-              // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
-              var description = `<h3>` + e.features[0].properties.Owner + `</h3>` + `<h4>` + `<b>` + `Address: ` + e.features[0].properties.Address +  `</h4>` +  `<h4>` + `<b>` + `Watcher: ` + e.features[0].properties.Watcher2022 + `</h4>` + `</b>` + `<h4>` + `<b>` + `2022 Code: ` + e.features[0].properties.Code2022 + `</h4>`  + `</b>`  + `<h4>` + `<b>` + `Trees: ` + `</b>` + e.features[0].properties.TreeType + `</h4>`+ `<h4>` + `<b>` + `City: ` + e.features[0].properties.ShortCity + `</h4>`  + `</b>` + `<h4>` + `<b>` + `2022 Notes: ` + e.features[0].properties.Notes2022 + `</h4>` + `</b>`+ `<h4>` + `<b>` + `Ladders: ` + e.features[0].properties.Ladders + `</h4>` + `</b>` + `<h4>` + `<b>` + `Location Notes: ` + e.features[0].properties.LocationDescription +  `</h4>` + `</b>`;
-
-              // Ensure that if the map is zoomed out such that multiple
-              // copies of the feature are visible, the popup appears
-              // over the copy being pointed to.
-              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-              }
-
-              //add Popup to map
-
-              new mapboxgl.Popup()
-                .setLngLat(coordinates)
-                .setHTML(description)
-                .addTo(map);
-            });
-
-            // Change the cursor to a pointer when the mouse is over the places layer.
-            map.on('mouseenter', 'csvData', function () {
-              map.getCanvas().style.cursor = 'pointer';
-            });
-
-            // Change it back to a pointer when it leaves.
-            map.on('mouseleave', 'csvData', function () {
-              map.getCanvas().style.cursor = '';
-            });
-
-            var bbox = turf.bbox(data);
-            map.fitBounds(bbox, { padding: 50 });
-
-          });
-
-        });
-      };
-    });
-
-
       // Create variables to use in getIso()
       const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
       const lon = -122.800303;
@@ -238,7 +146,22 @@
         lon: lon,
         lat: lat
       };
-      map.on('load', () => {
+        $(document).ready(function () {
+      $.ajax({
+        type: "GET",
+        //YOUR TURN: Replace with csv export link
+        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSAh3-jxViLIG7oKUe7YXak-mPsJC-uL2EiDlk-FWZfUvjmk77IAuyYCAXf8UT0-i-pQYVgfVJ3dY2L/pub?output=csv',
+        dataType: "text",
+        success: function (csvData) { makeGeoJSON(csvData); }
+      });
+
+      function makeGeoJSON(csvData) {
+        csv2geojson.csv2geojson(csvData, {
+          latfield: 'Latitude', 
+          lonfield: 'Longitude',
+          delimiter: ','
+        }, function (err, data) {
+           map.on('load', () => {
         
              //Add the layer to the map
             map.addLayer({
@@ -332,8 +255,11 @@
         // Make the API call
         getIso();
         
-      });
-    
+          });
+
+        });
+      };
+    });
   </script>
 
 </body>
