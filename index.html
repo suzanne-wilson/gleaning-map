@@ -130,7 +130,6 @@
         }, function (err, data) {
           map.on('load', function () {
 
-            //Add the layer to the map
              //Add the layer to the map
             map.addLayer({
               'id': 'csvData',
@@ -141,13 +140,14 @@
               },
               'paint': {
                 'circle-radius': 5,
-                'circle-color': "CodeColor23"
-       //           [ 'match',
-         //                         ['get', 'Permission2023'],
-         //                         'yes',
-         //                         '#663399',
-         //                         '#a9a9a9'
-         //                         ]
+                'circle-color': 
+                [ 'match',
+                                 ['get', 'Permission2023'],
+                                  '1',
+                                  '#663399',
+                                  '#a9a9a9'
+                                  ],
+        //        'filter': ['==', '$type', 'Polygon']
               }
             });
 
