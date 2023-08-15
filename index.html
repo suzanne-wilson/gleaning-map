@@ -114,8 +114,6 @@
       transformRequest: transformRequest
     });
     
-    checkers = Path('../checkermap.geojson')
-
     $(document).ready(function () {
       $.ajax({
         type: "GET",
@@ -164,7 +162,9 @@
                                   ]
               }
             });
-
+            map.addsource('checkers', {
+              'type': 'geojson',
+              url: 'https://suzanne-wilson.github.io/gleaning-map/checkermap.geojson'});
             map.addLayer({
                           'id': 'checkers',
                           'type': 'symbol',
