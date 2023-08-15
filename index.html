@@ -210,25 +210,7 @@
             map.on('mouseleave', 'csvData', function () {
               map.getCanvas().style.cursor = '';
             });
- //           map.addsource('checkers', {
- //             'type': 'geojson',
-//              'data': './checkermap.geojson'});
-//            map.addLayer({
-//                          'id': 'checkers',
-//                          'type': 'symbol',
-//                          'source': 'checkers',
-//                          'layout': {
-//                                      'icon-image': 'marker-11',
-//                                      // get the title name from the source's "title" property
-//                                      'text-field': ['get', 'tag'],
-//                                      'text-font': [
-//                                      'Open Sans Semibold',
-//                                      'Arial Unicode MS Bold'
-//                                      ],
-//                          'text-offset': [0, 1.25],
-//                          'text-anchor': 'top'
-//                          }
-//                          });
+
             var bbox = turf.bbox(csvData);
             map.fitBounds(bbox, { padding: 50 });
 
