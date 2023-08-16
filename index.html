@@ -202,6 +202,26 @@
                 .setLngLat([-122.764125	,	48.117866])
                 .setPopup(new mapboxgl.Popup().setHTML("<h1>Doug Van Allen</h1>"))
                 .addTo(map);
+
+            const RVL = new mapboxgl.Marker()
+                .setLngLat([-122.774623	,	48.037644])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Rachel Van Laanen</h1>"))
+                .addTo(map);
+
+            const SF = new mapboxgl.Marker()
+                .setLngLat([-122.849626	,	48.074158])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Sonny Flores</h1>"))
+                .addTo(map);
+
+            const KA = new mapboxgl.Marker()
+                .setLngLat([-122.788672	,	48.113136])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Katie Appleyard</h1>"))
+                .addTo(map);
+
+            const TD = new mapboxgl.Marker()
+                .setLngLat([-122.793605	,	48.099889])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Tammy Dixon</h1>"))
+                .addTo(map);
            
 console.log(marker.getPopup()); // return the popup instance
             var bbox = turf.bbox(csvData);
