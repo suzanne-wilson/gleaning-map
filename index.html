@@ -192,7 +192,18 @@
             map.on('mouseleave', 'csvData', function () {
               map.getCanvas().style.cursor = '';
             });
+            
+            const marker = new mapboxgl.Marker()
+                .setLngLat([-122.803375	,	48.135078])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Dorothy Westlund</h1>"))
+                .addTo(map);
 
+            const marker = new mapboxgl.Marker()
+                .setLngLat([-122.764125	,	48.117866])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Doug Van Allen</h1>"))
+                .addTo(map);
+           
+console.log(marker.getPopup()); // return the popup instance
             var bbox = turf.bbox(csvData);
             map.fitBounds(bbox, { padding: 50 });
 
