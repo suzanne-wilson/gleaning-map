@@ -222,7 +222,74 @@
                 .setLngLat([-122.793605	,	48.099889])
                 .setPopup(new mapboxgl.Popup().setHTML("<h1>Tammy Dixon</h1>"))
                 .addTo(map);
-           
+ 
+            const AR = new mapboxgl.Marker()
+                .setLngLat([-122.756488	,	48.121625])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Alex Rossoff</h1>"))
+                .addTo(map);
+
+            const CL = new mapboxgl.Marker()
+                .setLngLat([-122.784641	,	48.138301])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Cheryl Lowe</h1>"))
+                .addTo(map);
+
+            const AO = new mapboxgl.Marker()
+                .setLngLat([-122.799502	,	48.110323])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Amy O'Shea</h1>"))
+                .addTo(map);
+
+            const HZ = new mapboxgl.Marker()
+                .setLngLat([-122.797459	,	48.116162])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Hailian Zhou</h1>"))
+                .addTo(map);
+
+            const JP = new mapboxgl.Marker()
+                .setLngLat([-122.847587	,	48.066031])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Janice Pastor</h1>"))
+                .addTo(map);
+
+            const KD = new mapboxgl.Marker()
+                .setLngLat([-122.794342	,	48.125485])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Kathy Darrow</h1>"))
+                .addTo(map);
+
+            const SR = new mapboxgl.Marker()
+                .setLngLat([-122.757503	,	48.122447])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Seth Rolland</h1>"))
+                .addTo(map);
+            
+            const KG = new mapboxgl.Marker()
+                .setLngLat([-122.769535	,	48.122113])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Kimberly Gallagher</h1>"))
+                .addTo(map);
+            
+            const SK = new mapboxgl.Marker()
+                .setLngLat([-122.789718	,	48.115307])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Sarah Kozielski</h1>"))
+                .addTo(map);
+            
+            const BE = new mapboxgl.Marker()
+                .setLngLat([-122.785677	,	48.138504])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Bob and Claire Eike</h1>"))
+                .addTo(map);
+            
+            const CP = new mapboxgl.Marker()
+                .setLngLat([-122.762305	,	48.118626])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Cathy Parkman</h1>"))
+                .addTo(map);
+            
+            const KS = new mapboxgl.Marker()
+                .setLngLat([-122.837917	,	48.129039])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Kathy Salmonson</h1>"))
+                .addTo(map);
+            
+            const MZ = new mapboxgl.Marker()
+                .setLngLat([-122.680132	,	48.02894])
+                .setPopup(new mapboxgl.Popup().setHTML("<h1>Michael Zimmerman and Hope Borsato</h1>"))
+                .addTo(map);
+
+
+            
 console.log(marker.getPopup()); // return the popup instance
             var bbox = turf.bbox(csvData);
             map.fitBounds(bbox, { padding: 50 });
