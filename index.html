@@ -112,11 +112,11 @@
       zoom: 11.5,// starting zoom
       transformRequest: transformRequest
     });
-    const trees124 = '../AUG18codes1to4.geojson';
+    const trees124 = './AUG18codes1to4.geojson';
     map.on('load', function () {
            map.addSource('trees1to4', {
               'type': 'geojson',
-              'data': '../AUG18codes1to4.geojson'
+              'data': './AUG18codes1to4.geojson'
             });
             
              //Add the layer to the map
