@@ -132,12 +132,12 @@
           map.on('load', function () {
            map.addSource('trees1to4', {
               'type': 'geojson',
-              'data': 'AUG18codes1to4.geojson'
+              'data': '../AUG18codes1to4.geojson'
             });
             
              //Add the layer to the map
             map.addLayer({
-              'id': 'trees134',
+              'id': 'trees1to4',
               'type': 'circle',
               'source':'geojson',
               'data': trees1to4,
