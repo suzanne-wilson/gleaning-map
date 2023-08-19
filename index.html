@@ -112,7 +112,7 @@
       zoom: 11.5,// starting zoom
       transformRequest: transformRequest
     });
-    
+    const trees1to4 = 
     $(document).ready(function () {
       $.ajax({
         type: "GET",
@@ -132,26 +132,19 @@
 
              //Add the layer to the map
             map.addLayer({
-              'id': 'csvData',
+              'id': 'trees1to4',
               'type': 'circle',
-              'source': {
-                'type': 'geojson',
-                'data': data
+              'source':'geojson',
+              'data': trees1to4
               },
               'paint': {
                 'circle-radius': 5,
                 'circle-color': 
                 [ 'match',
-                 ['get', 'Watcher2023'],
-                  'Owner',
+                 ['get', 'Code'],
+                  '3',
                  '#ffe135',
-                 'Kathy',
-                 '#90ee90',
-                 'Rachael',   
-                 '#228b22',  
-                 'Seth',  
-                 '#3cb371',  
-                 'Kathy & Owner',
+                 '4',
                  '#90ee90',
                  '#f08080'
                 ]
