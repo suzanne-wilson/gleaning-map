@@ -132,14 +132,16 @@
           map.on('load', function () {
            map.addSource('trees1to4', {
               'type': 'geojson',
-              'data': {
-                'type': 'FeatureCollection',
-                'features': []
-              }
+              'data': ''
             });
+            map.addSource('earthquakes', {
+type: 'geojson',
+// Use a URL for the value for the `data` property.
+data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
+});
              //Add the layer to the map
             map.addLayer({
-              'id': 'trees134',
+              'id': 'trees1to4',
               'type': 'circle',
               'source':'geojson',
       //        'url' = 'https://github.com/suzanne-wilson/gleaning-map/blob/729c8a66a56420ca5440940f8682308ed8c56568/checkermap.geojson'
@@ -289,9 +291,6 @@
                 .setPopup(new mapboxgl.Popup().setHTML("<h1>Michael Zimmerman and Hope Borsato</h1>"))
                 .addTo(map);
 
-
-            
-console.log(marker.getPopup()); // return the popup instance
             var bbox = turf.bbox(csvData);
             map.fitBounds(bbox, { padding: 50 });
 
