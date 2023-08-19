@@ -130,20 +130,20 @@
           delimiter: ','
         }, function (err, data) {
           map.on('load', function () {
-       map.addSource('trees1to4', {
-          type: 'geojson',
-          data: {
-            'type': 'FeatureCollection',
-            'features': []
-          }
-        });
+           map.addSource('trees1to4', {
+              'type': 'geojson',
+              'data': {
+                'type': 'FeatureCollection',
+                'features': []
+              }
+            });
              //Add the layer to the map
             map.addLayer({
-              'id': 'trees1to4',
+              'id': 'trees134',
               'type': 'circle',
-              'source':'geojson',
-              'data': trees1to4
-              },
+              'source':{'type'='geojson',
+                        'url' = 'https://github.com/suzanne-wilson/gleaning-map/blob/729c8a66a56420ca5440940f8682308ed8c56568/checkermap.geojson'}
+              'data': trees1to4,
               'paint': {
                 'circle-radius': 5,
                 'circle-color': 
@@ -153,12 +153,11 @@
                  '#ffe135',
                  '4',
                  '#90ee90',
-                 '#f08080'
-                ] } ) 
-            )
+                 '#f08080'] }
+            } );
             )
             }
-                             );
+         );
                 
             // When a click event occurs on a feature in the csvData layer, open a popup at the
             // location of the feature, with description HTML from its properties.
