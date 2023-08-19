@@ -130,7 +130,13 @@
           delimiter: ','
         }, function (err, data) {
           map.on('load', function () {
-
+       map.addSource('trees1to4', {
+          type: 'geojson',
+          data: {
+            'type': 'FeatureCollection',
+            'features': []
+          }
+        });
              //Add the layer to the map
             map.addLayer({
               'id': 'trees1to4',
