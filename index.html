@@ -112,7 +112,7 @@
       zoom: 11.5,// starting zoom
       transformRequest: transformRequest
     });
-    const trees1to4 = 'https://github.com/suzanne-wilson/gleaning-map/blob/729c8a66a56420ca5440940f8682308ed8c56568/checkermap.geojson';
+    const trees124 = 'https://github.com/suzanne-wilson/gleaning-map/blob/37c2234ec06d15dac84b19b75cba938dfa0063c2/AUG18codes1to4.geojson';
     
     $(document).ready(function () {
       $.ajax({
@@ -132,19 +132,14 @@
           map.on('load', function () {
            map.addSource('trees1to4', {
               'type': 'geojson',
-              'data': ''
+              'data': 'https://github.com/suzanne-wilson/gleaning-map/blob/37c2234ec06d15dac84b19b75cba938dfa0063c2/AUG18codes1to4.geojson'
             });
-            map.addSource('earthquakes', {
-type: 'geojson',
-// Use a URL for the value for the `data` property.
-data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
-});
+            
              //Add the layer to the map
             map.addLayer({
-              'id': 'trees1to4',
+              'id': 'trees134',
               'type': 'circle',
               'source':'geojson',
-      //        'url' = 'https://github.com/suzanne-wilson/gleaning-map/blob/729c8a66a56420ca5440940f8682308ed8c56568/checkermap.geojson'
               'data': trees1to4,
               'paint': {
                 'circle-radius': 5,
