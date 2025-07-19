@@ -20,16 +20,30 @@
     */
     let map;
 
-    async function initMap() {
-      const { Map } = await google.maps.importLibrary("maps");
+async function initMap() {
+  // The location of Seths house
+  const position = { lat: 48.1223943, lng: -122.7572974 };
+  // Request needed libraries.
+  //@ts-ignore
+  const { Map } = await google.maps.importLibrary("maps");
+  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
-      map = new Map(document.getElementById("map"), {
-        center: { lat: -34.397, lng: 150.644 },
-        zoom: 8,
-      });
-    }
+  // The map, centered at Seths house
+  map = new Map(document.getElementById("map"), {
+    zoom: 4,
+    center: position,
+    mapId: "DEMO_MAP_ID",
+  });
 
-    initMap();
+  // The marker, positioned at Seths house
+  const marker = new AdvancedMarkerElement({
+    map: map,
+    position: position,
+    title: "1039 Jackson St",
+  });
+}
+
+initMap();
     </script>
     <style>
     /**
