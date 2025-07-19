@@ -21,6 +21,7 @@
     let map;
 
 async function initMap() {
+  const {InfoWindow} = await google.maps.importLibrary("maps");
   // The location of Seths house
   const position = { lat: 48.1223943, lng: -122.7572974 };
   // Request needed libraries.
@@ -34,7 +35,7 @@ async function initMap() {
     center: position,
     mapId: "DEMO_MAP_ID",
   });
-
+  infoWindow = new InfoWindow({pixelOffset: {height: -37}});
   // The marker, positioned at Seths house
   const marker = new AdvancedMarkerElement({
     map: map,
