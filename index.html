@@ -1,281 +1,62 @@
-<!DOCTYPE html>
+
+<!doctype html>
+<!--
+ @license
+ Copyright 2019 Google LLC. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+-->
 <html>
+  <head>
+    <title>Simple Map</title>
+        <!-- prettier-ignore -->
+    <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${
+    c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+        ({key: "AIzaSyBcsg2RQqXdtC-lHktvSorZHfQcXgJdz9E", v: "weekly"});</script>
+    <script>
+    /**
+    * @license
+    * Copyright 2019 Google LLC. All Rights Reserved.
+    * SPDX-License-Identifier: Apache-2.0
+    */
+    let map;
 
-<head>
-  <meta charset='utf-8' />
-  <title></title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
-  <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-    <!-- Mapbox GL JS -->
-    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
-    <link
-      href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
-      rel="stylesheet"
-    />
+    async function initMap() {
+      const { Map } = await google.maps.importLibrary("maps");
 
-    <!-- Mapbox Assembly -->
-    <link
-      href="https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.min.css"
-      rel="stylesheet"
-    />
-  <script src="https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.js"></script>
-  <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
-  <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
+      map = new Map(document.getElementById("map"), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8,
+      });
     }
 
+    initMap();
+    </script>
+    <style>
+    /**
+    * @license
+    * Copyright 2019 Google LLC. All Rights Reserved.
+    * SPDX-License-Identifier: Apache-2.0
+    */
+    /*
+    * Always set the map height explicitly to define the size of the div element
+    * that contains the map.
+    */
     #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
+      height: 100%;
     }
 
-    /* Popup styling */
-
-    .mapboxgl-popup {
-      padding-bottom: 5px;
-    }
- 
-    .mapboxgl-popup-close-button {
-      display: none;
-    }
-
-    .mapboxgl-popup-content {
-      font: 400 12px/18px 'Source Sans Pro', 'Helvetica Neue', Sans-serif;
+    /*
+    * Optional: Makes the sample page fill the window.
+    */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
       padding: 0;
-      width: 250px;
     }
-
-    .mapboxgl-popup-content-wrapper {
-      padding: 1%;
-    }
-
-    .mapboxgl-popup-content h3 {
-      background: rgb(61, 59, 59);
-      text-align: center;
-      color: #fff;
-      margin: 0;
-      display: block;
-      padding: 10px;
-      font-weight: 500;
-      margin-top: -5px;
-    }
-
-    .mapboxgl-popup-content h4 {
-      margin: 0;
-      display: block;
-      padding: 10px 3px 10px 10px;
-      font-weight: 400;
-    }
-
-    .mapboxgl-container {
-      cursor: pointer;
-    }
-
-    .mapboxgl-popup-anchor-top>.mapboxgl-popup-content {
-      margin-top: 3px;
-    }
-
-    .mapboxgl-popup-anchor-top>.mapboxgl-popup-tip {
-      border-bottom-color: rgb(61, 59, 59);
-    }
-  </style>
-</head>
-
-<body>
-  <div id='map'></div>
-  <script>
-  // SHEET MAPPER CODE
-    var transformRequest = (url, resourceType) => {
-      var isMapboxRequest =
-        url.slice(8, 22) === "api.mapbox.com" ||
-        url.slice(10, 26) === "tiles.mapbox.com";
-      return {
-        url: isMapboxRequest
-          ? url.replace("?", "?pluginName=sheetMapper&")
-          : url
-      };
-    };
-    //YOUR TURN: add your Mapbox token
-    
-    mapboxgl.accessToken = 'pk.eyJ1Ijoic3V6YW5uZS13aWxzb24iLCJhIjoiY2xrdnpzN2cwMHg0NzNsbXlyeTgyajg3ayJ9.EyOR6OwW23MTmLSUn-2UZg'; //Mapbox token 
-    const map = new mapboxgl.Map({
-      container: 'map', // container id
-      style: 'mapbox://styles/mapbox/streets-v12', // YOUR TURN: choose a style: https://docs.mapbox.com/api/maps/#styles
-      center: [ -122.800303, 48.119783], // starting position [lng, lat]
-      zoom: 11.5,// starting zoom
-      transformRequest: transformRequest
-    });
-    const trees124 = './AUG18codes1to4.geojson';
-    map.on('load', function () {
-           map.addSource('trees1to4', {
-              'type': 'geojson',
-              'data': './AUG18codes1to4.geojson'
-            });
-            
-             //Add the layer to the map
-            map.addLayer({
-              'id': 'trees1to4',
-              'type': 'circle',
-              'source':'geojson',
-              'data': trees124,
-              'paint': {
-                'circle-radius': 5,
-                'circle-color': 
-                [ 'match',
-                 ['get', 'Code'],
-                  '3',
-                 '#ffe135',
-                 '4',
-                 '#90ee90',
-                 '#f08080'] }
-            } );
-          
-               
-            // When a click event occurs on a feature in the csvData layer, open a popup at the
-            // location of the feature, with description HTML from its properties.
-            map.on('click', 'csvData', function (e) {
-              var coordinates = e.features[0].geometry.coordinates.slice();
-
-              //set popup text
-              //You can adjust the values of the popup to match the headers of your CSV.
-              // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
-              var description = `<h3>` + e.features[0].properties.Owner + `</h3>` + `<h4>` + `<b>` + `Address: ` + e.features[0].properties.Address +  `</h4>` +  `<h4>` + `<b>` + `Watcher: ` + e.features[0].properties.Watcher2023 + `</h4>` + `</b>`  +  `<h4>` + `<b>` + `Watcher in 2022: ` + e.features[0].properties.Watcher2022 + `</h4>` + `</b>` + `<h4>` + `<b>` + `Code: ` + e.features[0].properties.Code + `</h4>`  + `</b>`  + `<h4>` + `<b>` + `Trees: ` + `</b>` + e.features[0].properties.TreeType + `</h4>`+ `<h4>` + `<b>` + `City: ` + e.features[0].properties.ShortCity + `</h4>`  + `</b>` + `<h4>` + `<b>` + `2023 Notes: ` + e.features[0].properties.Notes2023 + `</h4>` + `</b>`+ `<h4>` + `<b>` + `Ladders: ` + e.features[0].properties.Ladders + `</h4>` + `</b>` + `<h4>` + `<b>` + `Location Notes: ` + e.features[0].properties.LocationDescription +  `</h4>` + `</b>`;
-
-              // Ensure that if the map is zoomed out such that multiple
-              // copies of the feature are visible, the popup appears
-              // over the copy being pointed to.
-              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-              }
-
-              //add Popup to map
-
-              new mapboxgl.Popup()
-                .setLngLat(coordinates)
-                .setHTML(description)
-                .addTo(map);
-            });
-
-            // Change the cursor to a pointer when the mouse is over the places layer.
-            map.on('mouseenter', 'csvData', function () {
-              map.getCanvas().style.cursor = 'pointer';
-            });
-
-            // Change it back to a pointer when it leaves.
-            map.on('mouseleave', 'csvData', function () {
-              map.getCanvas().style.cursor = '';
-            });
-            
-            const DW = new mapboxgl.Marker()
-                .setLngLat([-122.803375	,	48.135078])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Dorothy Westlund</h1>"))
-                .addTo(map);
-
-            const DVA = new mapboxgl.Marker()
-                .setLngLat([-122.764125	,	48.117866])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Doug Van Allen</h1>"))
-                .addTo(map);
-
-            const RVL = new mapboxgl.Marker()
-                .setLngLat([-122.774623	,	48.037644])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Rachel Van Laanen</h1>"))
-                .addTo(map);
-
-            const SF = new mapboxgl.Marker()
-                .setLngLat([-122.849626	,	48.074158])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Sonny Flores</h1>"))
-                .addTo(map);
-
-            const KA = new mapboxgl.Marker()
-                .setLngLat([-122.788672	,	48.113136])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Katie Appleyard</h1>"))
-                .addTo(map);
-
-            const TD = new mapboxgl.Marker()
-                .setLngLat([-122.793605	,	48.099889])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Tammy Dixon</h1>"))
-                .addTo(map);
- 
-            const AR = new mapboxgl.Marker()
-                .setLngLat([-122.756488	,	48.121625])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Alex Rossoff</h1>"))
-                .addTo(map);
-
-            const CL = new mapboxgl.Marker()
-                .setLngLat([-122.784641	,	48.138301])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Cheryl Lowe</h1>"))
-                .addTo(map);
-
-            const AO = new mapboxgl.Marker()
-                .setLngLat([-122.799502	,	48.110323])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Amy O'Shea</h1>"))
-                .addTo(map);
-
-            const HZ = new mapboxgl.Marker()
-                .setLngLat([-122.797459	,	48.116162])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Hailian Zhou</h1>"))
-                .addTo(map);
-
-            const JP = new mapboxgl.Marker()
-                .setLngLat([-122.847587	,	48.066031])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Janice Pastor</h1>"))
-                .addTo(map);
-
-            const KD = new mapboxgl.Marker()
-                .setLngLat([-122.794342	,	48.125485])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Kathy Darrow</h1>"))
-                .addTo(map);
-
-            const SR = new mapboxgl.Marker()
-                .setLngLat([-122.757503	,	48.122447])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Seth Rolland</h1>"))
-                .addTo(map);
-            
-            const KG = new mapboxgl.Marker()
-                .setLngLat([-122.769535	,	48.122113])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Kimberly Gallagher</h1>"))
-                .addTo(map);
-            
-            const SK = new mapboxgl.Marker()
-                .setLngLat([-122.789718	,	48.115307])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Sarah Kozielski</h1>"))
-                .addTo(map);
-            
-            const BE = new mapboxgl.Marker()
-                .setLngLat([-122.785677	,	48.138504])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Bob and Claire Eike</h1>"))
-                .addTo(map);
-            
-            const CP = new mapboxgl.Marker()
-                .setLngLat([-122.762305	,	48.118626])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Cathy Parkman</h1>"))
-                .addTo(map);
-            
-            const KS = new mapboxgl.Marker()
-                .setLngLat([-122.837917	,	48.129039])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Kathy Salmonson</h1>"))
-                .addTo(map);
-            
-            const MZ = new mapboxgl.Marker()
-                .setLngLat([-122.680132	,	48.02894])
-                .setPopup(new mapboxgl.Popup().setHTML("<h1>Michael Zimmerman and Hope Borsato</h1>"))
-                .addTo(map);
-
-            var bbox = turf.bbox(trees1to4);
-            map.fitBounds(bbox, { padding: 50 });
-            }
-         );
-          
-      
-  </script>
-
-</body>
-
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
 </html>
