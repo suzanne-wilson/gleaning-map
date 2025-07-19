@@ -29,18 +29,6 @@ async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
      
-      //read in the trees data from the published csv file on google drive
-      $(document).ready(function () {
-      $.ajax({
-        type: "GET",
-        //YOUR TURN: Replace with csv export link
-        //https://docs.google.com/spreadsheets/d/1Dykqm_ZH6sph7khl2be-50zrHv1tFGlzivRokk7Q9vI/edit?usp=sharing
-        //  url: 'https://docs.google.com/spreadsheets/d/1XiZkEDjf8VXj9aa_HOvmU017jP3zhmfPPtZaR9_yUcE/gviz/tq?tqx=out:csv&sheet=Sheet31',
-        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTS6eEAqAqHOX81Jbv3KKTreUJ-zY5jZnAXd7yMDJNFRNksm_GHZVd1NKDElSdHBtZWQwWnODw-jxmo/pub?gid=511350341&single=true&output=csv',
-        dataType: "text",
-        success: function (trees) { makeGeoJSON(trees); }
-      });
-
   // The map, centered at Seths house
   map = new Map(document.getElementById("map"), {
     zoom: 11.5,
