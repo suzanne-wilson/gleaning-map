@@ -114,7 +114,11 @@ async function initMap() {
 
             var bbox = turf.bbox(data);
             map.fitBounds(bbox, { padding: 50 });
-           
+                     });
+
+        });
+      };
+    });
   // The map, centered at Seths house
   map = new Map(document.getElementById("map"), {
     zoom: 11.5,
